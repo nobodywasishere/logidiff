@@ -71,25 +71,24 @@ if __name__=="__main__":
     var_names = vars.copy()
 
     input_eq = replace_vars(input_eq, vars)
+    input_eq = replace_logic(input_eq)
 
     num_vars = len(vars)
 
-    for i in range(num_vars):
-        vars = list(bin(i)[2:0].zfill(num_vars))
-        print(input_eq)
-        print(vars)
-        print(eval('print(' + input_eq + ')'))
-    
+    not_eqs = []
 
-    # for thing in inut_eq.split(' '):
-        
-    #     pass
-
-    # eq1 = replace(input_eq.split('=')[0].strip())
-    # eq2 = replace(input_eq.split('=')[1].strip())
-
-    # print(eq1)
-    # print(eq2)
-
-    # eval(eq1)
+    for i in range(2**num_vars):
+        vars = list(bin(i)[2:].zfill(num_vars))
+        vars = [int(i) for i in vars]
+        if not eval(input_eq):
+            thing = []
+            for i in range(num_vars):
+                thing.append(f'{var_names[i]}: {vars[i]}')
+            not_eqs.append(thing)
+    if not_eqs:
+        print( 'Statements not equivalent for inputs:')
+        for i in not_eqs:
+            print(f'  {", ".join(i)}')
+    else:
+        print( 'Statements are equivalent')
 
