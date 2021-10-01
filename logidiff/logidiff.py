@@ -91,10 +91,10 @@ def replace_vars(statement, vars):
     for i, var in enumerate(vars):
         statement = statement.replace(f' {var} ', f' vars[{i}] ')
 
-    return statement    
+    return statement
 
-if __name__=="__main__":
-    input_eq = clean(' ' + ' '.join(sys.argv[1:]).lower() + ' ')
+def evaluate(equation):
+    input_eq = clean(' ' + equation.lower() + ' ')
 
     vars = find_vars(input_eq)
     var_names = vars.copy()
@@ -109,15 +109,28 @@ if __name__=="__main__":
     for i in range(2**num_vars):
         vars = list(bin(i)[2:].zfill(num_vars))
         vars = [int(i) for i in vars]
-        if not eval(input_eq):
+        result = eval(input_eq.strip())
+        if not result:
             thing = []
             for i in range(num_vars):
                 thing.append(f'{var_names[i]}: {vars[i]}')
             not_eqs.append(thing)
-    if not_eqs:
-        print( 'Statements not equivalent for inputs:')
-        for i in not_eqs:
-            print(f'  {", ".join(i)}')
+
+    return not_eqs
+
+if __name__=="__main__":
+
+    if len(sys.argv) < 2:
+        print('No statement to evaluate!')
+    
     else:
-        print( 'Statements are equivalent')
+
+        not_eqs = evaluate(' '.join(sys.argv[1:]))
+
+        if not_eqs:
+            print( 'Statements not equivalent for inputs:')
+            for i in not_eqs:
+                print(f'  {", ".join(i)}')
+        else:
+            print( 'Statements are equivalent')
 

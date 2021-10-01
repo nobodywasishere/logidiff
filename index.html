@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.6/brython.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.6/brython_stdlib.js">
+    </script>
+    <script src="./logidiff/logidiff.py" type="text/python3"></script>
+</head>
+
+<body onload="brython()">
+
+    <script type="text/python">
+    from browser import bind, document
+    from browser.html import TABLE, TR, TH, TD
+
+    from logidiff.logidiff import *
+
+    def thing(event):
+        not_eqs = evaluate(document["zone"].value)
+
+        if not_eqs:
+            document["output"].html = "Statements are not equal for: <br>"
+
+            for ne in not_eqs:
+                document["output"].html += ", ".join(ne) + "<br>"
+        else:
+            document["output"].html = "Statements are equal"
+
+
+    document["mybutton"].bind("click", thing)
+    document["mybutton"].bind("Enter", thing)
+
+    </script>
+
+    <input id="zone"><button id="mybutton">Solve</button>
+
+    <p id="output"></p>
+
+</body>
+
+</html>
