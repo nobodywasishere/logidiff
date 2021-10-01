@@ -5,19 +5,47 @@ import sys, re
 class Infix:
     def __init__(self, function):
         self.function = function
-    def __or__(self, other):
-        return self.function(other)
-    def __ror__(self, other):
-        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __pow__(self, other):
+        # return Infix(lambda x, self=self, other=other: self.function(x))
+        return not other
+
     def __truediv__(self, other):
         return self.function(other)
     def __rtruediv__(self, other):
         return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __add__(self, other):
+        return self.function(other)
+    def __radd__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __lshift__(self, other):
+        return self.function(other)
+    def __rshift__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __and__(self, other):
+        return self.function(other)
+    def __rand__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __xor__(self, other):
+        return self.function(other)
+    def __rxor__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
+    def __or__(self, other):
+        return self.function(other)
+    def __ror__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+
     def __call__(self, value1, value2):
         return self.function(value1, value2)
 
 # functions for implementing VHDL operators in python for evaluating statements
-# logical
+# logical, in order of precedence
+l_not  = Infix(lambda x:   not  x      )
 l_and  = Infix(lambda x,y:      x and y)
 l_or   = Infix(lambda x,y:      x  or y)
 l_nand = Infix(lambda x,y: not (x and y))
@@ -34,12 +62,13 @@ def clean(statement):
     return statement
 
 def replace_logic(statement):
-    statement = statement.replace( ' and ', ' |l_and| ')
-    statement = statement.replace(  ' or ',  ' |l_or| ')
-    statement = statement.replace(' nand ',' |l_nand| ')
-    statement = statement.replace( ' nor ', ' |l_nor| ')
-    statement = statement.replace( ' xor ', ' |l_xor| ')
-    statement = statement.replace(' xnor ',' |l_xnor| ')
+    statement = statement.replace( ' not ',    ' l_not** ')
+    statement = statement.replace( ' and ',   ' /l_and/ ' )
+    statement = statement.replace(  ' or ',    ' +l_or+ ' )
+    statement = statement.replace(' nand ', ' <<l_nand>> ')
+    statement = statement.replace( ' nor ',   ' &l_nor& ' )
+    statement = statement.replace( ' xor ',   ' ^l_xor^ ' )
+    statement = statement.replace(' xnor ',  ' |l_xnor| ' )
     return statement
 
 def find_vars(statement):
@@ -65,7 +94,7 @@ def replace_vars(statement, vars):
     return statement    
 
 if __name__=="__main__":
-    input_eq = clean(' '.join(sys.argv[1:]).lower() + ' ')
+    input_eq = clean(' ' + ' '.join(sys.argv[1:]).lower() + ' ')
 
     vars = find_vars(input_eq)
     var_names = vars.copy()
