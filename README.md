@@ -1,5 +1,7 @@
 # logidiff
 
+A website and Python library for determining if two logical statements are equivalent. Uses VHDL syntax and logical operators.
+
 | VHDL operator | Python operator | Left func | Right func|
 |-|-|-|-|
 | `not ` | `**` | `__pow__    ` | `            ` |

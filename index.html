@@ -15,14 +15,17 @@
             height: 100%;
         }
         .thing {
-            width: 600px;
+            max-width: 600px;
             margin: auto;
         }
         .text {
-            width: 90%;
+            width: 99%;
             font-size: 20px;
+            font-family: monospace;
+            text-align: center;
         }
     </style>
+    <title>logidiff</title>
 </head>
 
 <body onload="brython()">
@@ -34,29 +37,34 @@
 
     def keyevent(ev):
         if ev.key == "Enter":
-            thing(ev)
+            equivalent()
 
-    def thing(event):
-        not_eqs = evaluate(document["zone"].value)
+    def equivalent():
+        try:
+            not_eqs = evaluate(document["input"].value)
+        except Exception as e:
+            document["output"].html = f"Error: {str(e)}"
+            return
 
         if not_eqs:
-            document["output"].html = "Statements are not equal for: <br>"
+            document["output"].html = "Statements are not equivalent for: <br>"
 
             for ne in not_eqs:
                 document["output"].html += ", ".join(ne) + "<br>"
         else:
-            document["output"].html = "Statements are equal"
+            document["output"].html = "Statements are equivalent"
 
-
-    # document["mybutton"].bind("click", thing)
-    document["zone"].bind("keydown", keyevent)
-
+    document["input"].bind("keydown", keyevent)
     </script>
 
     
     <div class="thing">
-        <h1 style="text-align: center;">LOGIDIFF</h1>
-        <input id="zone" class="text">
+        <h1 style="text-align: center;">logidiff</h1>
+        <p>Input a logical equation and press enter to determine if both sides 
+            are equivalent. Uses VHDL operators and syntax (case insensitive).</p>
+        <p>The source code for this website is available <a href="https://github.com/nobodywasishere/logidiff/">here</a>.</p>
+        <hr><br>
+        <input id="input" class="text" placeholder="(a or b) and c = a and c or b and c">
         <!-- <button id="mybutton">Solve</button> -->
         <p id="output"></p>
     </div>

@@ -22,7 +22,7 @@ class Infix:
 
     def __lshift__(self, other):
         return self.function(other)
-    def __rshift__(self, other):
+    def __rlshift__(self, other):
         return Infix(lambda x, self=self, other=other: self.function(other, x))
 
     def __and__(self, other):
@@ -62,10 +62,11 @@ def clean(statement):
     return statement
 
 def replace_logic(statement):
+    # These are like this due to operator precedence
     statement = statement.replace( ' not ',    ' l_not** ')
     statement = statement.replace( ' and ',   ' /l_and/ ' )
     statement = statement.replace(  ' or ',    ' +l_or+ ' )
-    statement = statement.replace(' nand ', ' <<l_nand>> ')
+    statement = statement.replace(' nand ', ' <<l_nand<< ')
     statement = statement.replace( ' nor ',   ' &l_nor& ' )
     statement = statement.replace( ' xor ',   ' ^l_xor^ ' )
     statement = statement.replace(' xnor ',  ' |l_xnor| ' )
