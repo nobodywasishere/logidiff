@@ -7,7 +7,7 @@
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.6/brython_stdlib.js">
     </script>
-    <script src="http://blog.eowyn.net/logidiff/logidiff/logidiff.py" type="text/python3"></script>
+    <script src="logidiff.py" type="text/python3"></script>
 </head>
 
 <body onload="brython()">
@@ -16,7 +16,7 @@
     from browser import bind, document
     from browser.html import TABLE, TR, TH, TD
 
-    from logidiff.logidiff import *
+    from logidiff import *
 
     def thing(event):
         not_eqs = evaluate(document["zone"].value)
