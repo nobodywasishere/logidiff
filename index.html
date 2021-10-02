@@ -8,15 +8,33 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.6/brython_stdlib.js">
     </script>
     <script src="logidiff.py" type="text/python3"></script>
+
+    <style>
+        html {
+            font-size: 20px;
+            height: 100%;
+        }
+        .thing {
+            width: 600px;
+            margin: auto;
+        }
+        .text {
+            width: 90%;
+            font-size: 20px;
+        }
+    </style>
 </head>
 
 <body onload="brython()">
 
     <script type="text/python">
     from browser import bind, document
-    from browser.html import TABLE, TR, TH, TD
 
     from logidiff import *
+
+    def keyevent(ev):
+        if ev.key == "Enter":
+            thing(ev)
 
     def thing(event):
         not_eqs = evaluate(document["zone"].value)
@@ -30,15 +48,19 @@
             document["output"].html = "Statements are equal"
 
 
-    document["mybutton"].bind("click", thing)
-    document["mybutton"].bind("Enter", thing)
+    # document["mybutton"].bind("click", thing)
+    document["zone"].bind("keydown", keyevent)
 
     </script>
 
-    <input id="zone"><button id="mybutton">Solve</button>
-
-    <p id="output"></p>
-
+    
+    <div class="thing">
+        <h1 style="text-align: center;">LOGIDIFF</h1>
+        <input id="zone" class="text">
+        <!-- <button id="mybutton">Solve</button> -->
+        <p id="output"></p>
+    </div>
+    
 </body>
 
 </html>
