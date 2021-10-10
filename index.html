@@ -41,7 +41,10 @@
 
     def equivalent():
         try:
-            not_eqs = evaluate(document["input"].value)
+            if document["input"].value != "":
+                not_eqs = evaluate(document["input"].value)
+            else:
+                raise Exception("must provide an equation to evaluate")
         except Exception as e:
             document["output"].html = f"Error: {str(e)}"
             return
@@ -61,12 +64,24 @@
     <div class="thing">
         <h1 style="text-align: center;">logidiff</h1>
         <p>Input a logical equation and press enter to determine if both sides 
-            are equivalent. Uses VHDL operators and syntax (case insensitive).</p>
+            are equivalent. Uses VHDL operators and syntax (case insensitive).
+            Also supports aliases for common operators, such as 
+            '*' for 'and', '+' for 'or', '!' for 'not', and '^' for 'xor'. 
+            These aliases do not need spaces around them.
+            Multiple statements can be equated on the same line 
+            to check their total equivalency.</p>
         <p>The source code for this website is available <a href="https://github.com/nobodywasishere/logidiff/">here</a>.</p>
         <hr><br>
-        <input id="input" class="text" placeholder="(a or b) and c = a and c or b and c">
-        <!-- <button id="mybutton">Solve</button> -->
+        <input id="input" class="text" placeholder="(a or b) and c = a*c+b*c">
         <p id="output"></p>
+        <br><hr><br>
+        <div>
+            <h3>Examples</h3>
+            <pre>(a or b) and c = a*c+b*c</pre>
+            <pre>(a xor b) and c = (a and c) xor (b and c)</pre>
+            <pre>a xor b = a^b = !(a xnor b) = !a^!b</pre>
+            <pre>a or b = !a nand !b = not (!a and !b)</pre>
+        </div>
     </div>
     
 </body>

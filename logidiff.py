@@ -59,10 +59,13 @@ def clean(statement):
     statement = statement.replace('(', ' ( ')
     statement = statement.replace(')', ' ) ')
     statement = statement.replace('=', ' == ')
+    statement = statement.replace('*', ' and ')
+    statement = statement.replace('!', ' not ')
+    statement = statement.replace('+', ' or ')
+    statement = statement.replace('^', ' xor ')
     return statement
 
 def replace_logic(statement):
-    # These are like this due to operator precedence
     statement = statement.replace( ' not ',    ' l_not** ')
     statement = statement.replace( ' and ',   ' /l_and/ ' )
     statement = statement.replace(  ' or ',    ' +l_or+ ' )
