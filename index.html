@@ -83,7 +83,16 @@
             <pre>a or b = !a nand !b = not (!a and !b)</pre>
         </div>
     </div>
-    
+    <script>
+        var r = new XMLHttpRequest();
+        r.addEventListener('load', function() {
+            document.querySelector('#stats').innerText = JSON.parse(this.responseText).count_unique
+        })
+        r.open('GET', 'https://nobodywasishere.goatcounter.com/counter/' + '/{{ page.url | remove: "/" }}' + '.json')
+        r.send()
+    </script>
+    <script data-goatcounter="https://nobodywasishere.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 </body>
 
 </html>
